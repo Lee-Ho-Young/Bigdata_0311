@@ -304,7 +304,9 @@ delimiters.
 ---------------------------------------------------------------------------------------------------------
 [training@localhost ~]$`
 
+
 **2. Import columns**
+
 
 `[training@localhost ~]$ sqoop import \
 > --table accounts \
