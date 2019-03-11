@@ -94,8 +94,8 @@ Note: Recompile with -Xlint:deprecation for details.
 		Bytes Written=14845
 19/03/10 21:14:41 INFO mapreduce.ImportJobBase: Transferred 14.4971 KB in 56.0631 seconds (264.791 bytes/sec)
 19/03/10 21:14:41 INFO mapreduce.ImportJobBase: Retrieved 377 records.
-[training@localhost ~]$ 
-`
+[training@localhost ~]$ `
+
 
 **2. Import받은 테이블 데이터를 HDFS상에서 조회**
 
@@ -105,8 +105,8 @@ Found 5 items
 -rw-rw-rw-   1 training supergroup       3639 2019-03-10 21:14 /loudacre/basestations_import/part-m-00000
 -rw-rw-rw-   1 training supergroup       3791 2019-03-10 21:14 /loudacre/basestations_import/part-m-00001
 -rw-rw-rw-   1 training supergroup       3681 2019-03-10 21:14 /loudacre/basestations_import/part-m-00002
--rw-rw-rw-   1 training supergroup       3734 2019-03-10 21:14 /loudacre/basestations_import/part-m-00003
-`
+-rw-rw-rw-   1 training supergroup       3734 2019-03-10 21:14 /loudacre/basestations_import/part-m-00003`
+
 
 **3. Import받은 테이블 정보에 대한 개별파일 내용조회**
 
@@ -117,8 +117,8 @@ Found 5 items
 4,86011,Flagstaff,AZ,35.6308,-112.052
 5,86016,Gray Mountain,AZ,35.6308,-112.052
 6,86018,Parks,AZ,35.2563,-111.95
-.....
-`
+.....`
+
 
 **4. Import받은 테이블 정보를 Linux시스템으로 가져오기**
 
@@ -137,13 +137,12 @@ drwxr-xr-x 2 training training  4096 Sep 22  2016 Public
 drwxr-xr-x 2 training training  4096 Sep 22  2016 Templates
 drwxr-xr-x 4 training training  4096 Nov 14  2016 training_materials
 drwxr-xr-x 2 training training  4096 Sep 22  2016 Videos
-drwxr-xr-x 9 training training  4096 Oct 27  2016 workspace
-`
+drwxr-xr-x 9 training training  4096 Oct 27  2016 workspace`
+
 
 **5. Import table using an alternate file format(Parquet)**
 
-`
-[training@localhost ~]$ sqoop import \
+`[training@localhost ~]$ sqoop import \
 > --connect jdbc:mysql://localhost/loudacre \
 > --username training --password training \
 > --table basestations \
@@ -223,8 +222,8 @@ Note: Recompile with -Xlint:deprecation for details.
 	File Output Format Counters 
 		Bytes Written=0
 19/03/10 21:27:08 INFO mapreduce.ImportJobBase: Transferred 24.0166 KB in 41.1801 seconds (597.206 bytes/sec)
-19/03/10 21:27:08 INFO mapreduce.ImportJobBase: Retrieved 377 records.
-`
+19/03/10 21:27:08 INFO mapreduce.ImportJobBase: Retrieved 377 records.`
+
 
 **6. Check the contents of Parquet file using parquet-tools**
 
@@ -273,3 +272,141 @@ city = Valencia
 state = CA
 latitude = 34.3985
 longitude = -118.553`
+
+
+<GITHUB. Exercise1>
+-------------------------
+From the accounts table, import only the primary key, along with the first name, last name to
+HDFS directory /loudacre/accounts/user_info. Please save the file in text format with tab
+delimiters.
+
+**1. Check the PKs of accounts table**
+
+`[training@localhost ~]$ sqoop eval --connect jdbc:mysql://localhost/loudacre --username training --password training --query "desc accounts"
+19/03/10 22:08:24 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
+19/03/10 22:08:24 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+19/03/10 22:08:24 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+---------------------------------------------------------------------------------------------------------
+| Field                | Type                 | Null | Key | Default              | Extra                | 
+---------------------------------------------------------------------------------------------------------
+| acct_num             | int(11)              | NO  | PRI | (null)               |                      | 
+| acct_create_dt       | datetime             | NO  |     | (null)               |                      | 
+| acct_close_dt        | datetime             | YES |     | (null)               |                      | 
+| first_name           | varchar(255)         | NO  |     | (null)               |                      | 
+| last_name            | varchar(255)         | NO  |     | (null)               |                      | 
+| address              | varchar(255)         | NO  |     | (null)               |                      | 
+| city                 | varchar(255)         | NO  |     | (null)               |                      | 
+| state                | varchar(255)         | NO  |     | (null)               |                      | 
+| zipcode              | varchar(255)         | NO  |     | (null)               |                      | 
+| phone_number         | varchar(255)         | NO  |     | (null)               |                      | 
+| created              | datetime             | NO  |     | (null)               |                      | 
+| modified             | datetime             | NO  |     | (null)               |                      | 
+---------------------------------------------------------------------------------------------------------
+[training@localhost ~]$`
+
+**2. Import columns**
+
+`[training@localhost ~]$ sqoop import \
+> --table accounts \
+> --connect jdbc:mysql://localhost/loudacre \
+> --username training --password training \
+> --columns "acct_num, first_name, last_name" \
+> --target-dir /loudacre/accounts/user_info/ \
+> --fields-terminated-by "\t"
+19/03/10 22:13:10 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
+19/03/10 22:13:10 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+19/03/10 22:13:10 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+19/03/10 22:13:10 INFO tool.CodeGenTool: Beginning code generation
+19/03/10 22:13:10 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
+19/03/10 22:13:10 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
+19/03/10 22:13:10 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/lib/hadoop-mapreduce
+Note: /tmp/sqoop-training/compile/15d27f0f1795514f2a54f7a585e08682/accounts.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+19/03/10 22:13:13 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-training/compile/15d27f0f1795514f2a54f7a585e08682/accounts.jar
+19/03/10 22:13:13 WARN manager.MySQLManager: It looks like you are importing from mysql.
+19/03/10 22:13:13 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+19/03/10 22:13:13 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+19/03/10 22:13:13 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+19/03/10 22:13:13 INFO mapreduce.ImportJobBase: Beginning import of accounts
+19/03/10 22:13:13 INFO Configuration.deprecation: mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+19/03/10 22:13:13 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+19/03/10 22:13:14 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+19/03/10 22:13:14 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+19/03/10 22:13:17 INFO db.DBInputFormat: Using read commited transaction isolation
+19/03/10 22:13:17 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`acct_num`), MAX(`acct_num`) FROM `accounts`
+19/03/10 22:13:17 INFO db.IntegerSplitter: Split size: 32440; Num splits: 4 from: 1 to: 129761
+19/03/10 22:13:17 INFO mapreduce.JobSubmitter: number of splits:4
+19/03/10 22:13:17 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1552277124392_0003
+19/03/10 22:13:17 INFO impl.YarnClientImpl: Submitted application application_1552277124392_0003
+19/03/10 22:13:17 INFO mapreduce.Job: The url to track the job: http://localhost:8088/proxy/application_1552277124392_0003/
+19/03/10 22:13:17 INFO mapreduce.Job: Running job: job_1552277124392_0003
+19/03/10 22:13:26 INFO mapreduce.Job: Job job_1552277124392_0003 running in uber mode : false
+19/03/10 22:13:26 INFO mapreduce.Job:  map 0% reduce 0%
+19/03/10 22:13:33 INFO mapreduce.Job:  map 25% reduce 0%
+19/03/10 22:13:39 INFO mapreduce.Job:  map 50% reduce 0%
+19/03/10 22:13:46 INFO mapreduce.Job:  map 75% reduce 0%
+19/03/10 22:13:53 INFO mapreduce.Job:  map 100% reduce 0%
+19/03/10 22:13:53 INFO mapreduce.Job: Job job_1552277124392_0003 completed successfully
+19/03/10 22:13:53 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=560468
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=470
+		HDFS: Number of bytes written=2615920
+		HDFS: Number of read operations=16
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=8
+	Job Counters 
+		Launched map tasks=4
+		Other local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=0
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=19549
+		Total vcore-seconds taken by all map tasks=19549
+		Total megabyte-seconds taken by all map tasks=5004544
+	Map-Reduce Framework
+		Map input records=129761
+		Map output records=129761
+		Input split bytes=470
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=323
+		CPU time spent (ms)=4570
+		Physical memory (bytes) snapshot=496726016
+		Virtual memory (bytes) snapshot=8262258688
+		Total committed heap usage (bytes)=251920384
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=2615920
+19/03/10 22:13:53 INFO mapreduce.ImportJobBase: Transferred 2.4947 MB in 39.156 seconds (65.2418 KB/sec)
+19/03/10 22:13:53 INFO mapreduce.ImportJobBase: Retrieved 129761 records.
+[training@localhost ~]$ hdfs dfs -ls /loudacre/accounts/
+Found 1 items
+drwxrwxrwx   - training supergroup          0 2019-03-10 22:13 /loudacre/accounts/user_info
+[training@localhost ~]$ hdfs dfs -ls /loudacre/accounts/user_info/
+Found 5 items
+-rw-rw-rw-   1 training supergroup          0 2019-03-10 22:13 /loudacre/accounts/user_info/_SUCCESS
+-rw-rw-rw-   1 training supergroup     638090 2019-03-10 22:13 /loudacre/accounts/user_info/part-m-00000
+-rw-rw-rw-   1 training supergroup     649567 2019-03-10 22:13 /loudacre/accounts/user_info/part-m-00001
+-rw-rw-rw-   1 training supergroup     649000 2019-03-10 22:13 /loudacre/accounts/user_info/part-m-00002
+-rw-rw-rw-   1 training supergroup     679263 2019-03-10 22:13 /loudacre/accounts/user_info/part-m-00003`
+
+
+<GITHUB. Exercise2>
+-------------------------
+This time save the same in parquet format with snappy compression. Save it in
+/loudacre/accounts/user_compressed. Provide.a screenshot of HUE with the new directory
+created.
+
+
+
+<GITHUB. Exercise3>
+-------------------------
+Finally save in /loudacre/accounts/CA only clients whose state is from California. Save the file
+in parquet format and compressed using gzip. From the terminal, display some of the records
+that you just imported. Take a screenshot and save it as CA_only.
