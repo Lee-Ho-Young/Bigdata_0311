@@ -414,6 +414,10 @@ lsh
 32398	Albert	Walters
 ```
 
+**3. HUE Screen Shot**
+![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/exercise1.png)
+
+
 
 <GITHUB. Exercise2>
 -------------------------
@@ -422,11 +426,13 @@ This time save the same in parquet format with snappy compression. Save it in
 created.
 
 
+**1. Command Line**
+
 ```
 [training@localhost ~]$ sqoop import \
 > --connect jdbc:mysql://localhost/loudacre \
 > --username training --password training \
-> --table accounts \--
+> --table accounts \
 > --columns "acct_num, first_name, last_name" \
 > --target-dir /loudacre/accounts/user_compressed \
 > --fields-terminated-by "\t" \
@@ -518,6 +524,9 @@ drwxrwxrwx   - training supergroup          0 2019-03-10 22:33 /loudacre/account
 -rw-rw-rw-   1 training supergroup     324753 2019-03-10 22:32 /loudacre/accounts/user_compressed/cde27cc3-8d64-4b37-a4bc-e95c81dee2e5.parquet
 ```
 
+**2. HUE Screen Shot**
+![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/exercise2.png)
+
 
 <GITHUB. Exercise3>
 -------------------------
@@ -525,6 +534,8 @@ Finally save in /loudacre/accounts/CA only clients whose state is from Californi
 in parquet format and compressed using gzip. From the terminal, display some of the records
 that you just imported. Take a screenshot and save it as CA_only.
 
+
+**1. Command Line**
 
 ```
 [training@localhost ~]$ sqoop import \
@@ -621,3 +632,8 @@ drwxrwxrwx   - training supergroup          0 2019-03-10 22:44 /loudacre/account
 -rw-rw-rw-   1 training supergroup    1004669 2019-03-10 22:44 /loudacre/accounts/CA/99e1c6f6-c848-4cd4-95ef-6a40cda6032e.parquet
 [training@localhost ~]$ 
 ```
+
+
+**2. HUE Screen Shot**
+![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/exercise3.png)
+
