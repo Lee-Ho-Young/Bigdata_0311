@@ -427,7 +427,7 @@ lsh
 ```
 
 **3. HUE Screen Shot**
-![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/exercise1.png)
+![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/picture/Sqoop/exercise1.png)
 
 
 
@@ -537,7 +537,7 @@ drwxrwxrwx   - training supergroup          0 2019-03-10 22:33 /loudacre/account
 ```
 
 **2. HUE Screen Shot**
-![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/exercise2.png)
+![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/picture/Sqoop/exercise2.png)
 
 
 <GITHUB. Exercise3>
@@ -647,5 +647,5 @@ drwxrwxrwx   - training supergroup          0 2019-03-10 22:44 /loudacre/account
 
 
 **2. HUE Screen Shot**
-![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/exercise3.png)
+![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/picture/Sqoop/exercise3.png)
 
