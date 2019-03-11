@@ -222,7 +222,8 @@ Note: Recompile with -Xlint:deprecation for details.
 	File Output Format Counters 
 		Bytes Written=0
 19/03/10 21:27:08 INFO mapreduce.ImportJobBase: Transferred 24.0166 KB in 41.1801 seconds (597.206 bytes/sec)
-19/03/10 21:27:08 INFO mapreduce.ImportJobBase: Retrieved 377 records.`
+19/03/10 21:27:08 INFO mapreduce.ImportJobBase: Retrieved 377 records.
+`
 
 
 **6. Check the contents of Parquet file using parquet-tools**
@@ -503,7 +504,6 @@ drwxrwxrwx   - training supergroup          0 2019-03-10 22:33 /loudacre/account
 -rw-rw-rw-   1 training supergroup     324989 2019-03-10 22:32 /loudacre/accounts/user_compressed/c871ef25-f7d9-491d-abe3-c71411d2d23b.parquet
 -rw-rw-rw-   1 training supergroup     324753 2019-03-10 22:32 /loudacre/accounts/user_compressed/cde27cc3-8d64-4b37-a4bc-e95c81dee2e5.parquet
 `
-
 
 
 <GITHUB. Exercise3>
