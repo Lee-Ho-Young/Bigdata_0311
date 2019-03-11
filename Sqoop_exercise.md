@@ -3,7 +3,6 @@
 **1. MySQL DB에 존재하는 table list를 Sqoop을 통해 조회**
 
 `[training@localhost ~]$ sqoop list-tables --connect jdbc:mysql://localhost/loudacre --username training --password training
-
 19/03/10 21:08:51 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
 19/03/10 21:08:51 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
 19/03/10 21:08:52 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
@@ -15,8 +14,8 @@ device
 knowledgebase
 mostactivestations
 webpage
-[training@localhost ~]$ 
-`
+[training@localhost ~]$ `
+
 
 <Exercise 2. import>
 -------------------------
