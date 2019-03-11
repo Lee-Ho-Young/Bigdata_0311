@@ -227,16 +227,6 @@ Note: Recompile with -Xlint:deprecation for details.
 
 **6. Check the contents of Parquet file using parquet-tools**
 
-`[training@localhost ~]$ hdfs dfs -ls /loudacre/basestations_import_parquet/
-Found 6 items
-drwxrwxrwx   - training supergroup          0 2019-03-10 21:26 /loudacre/basestations_import_parquet/.metadata
-drwxrwxrwx   - training supergroup          0 2019-03-10 21:27 /loudacre/basestations_import_parquet/.signals
--rw-rw-rw-   1 training supergroup       3828 2019-03-10 21:26 /loudacre/basestations_import_parquet/44044162-fea6-4b1b-b650-d5c191e0ea53.parquet
--rw-rw-rw-   1 training supergroup       3893 2019-03-10 21:27 /loudacre/basestations_import_parquet/5a9e87cc-6a67-46ed-8a9c-7cb1804bc29e.parquet
--rw-rw-rw-   1 training supergroup       3933 2019-03-10 21:26 /loudacre/basestations_import_parquet/907d2adc-e750-47d8-ad4f-510830089754.parquet
--rw-rw-rw-   1 training supergroup       4015 2019-03-10 21:26 /loudacre/basestations_import_parquet/dd0a8b52-3868-4416-bc89-57d2efe726bb.parquet`
-
-
 `[training@localhost ~]$ parquet-tools head hdfs://localhost/loudacre/basestations_import_parquet/
 station_num = 95
 zipcode = 91311
@@ -271,7 +261,8 @@ zipcode = 91355
 city = Valencia
 state = CA
 latitude = 34.3985
-longitude = -118.553`
+longitude = -118.553\
+`
 
 
 <GITHUB. Exercise1>
@@ -316,7 +307,7 @@ delimiters.
 > --target-dir /loudacre/accounts/user_info/ \
 > --fields-terminated-by "\t"
 19/03/10 22:13:10 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
-19/03/10 22:13:10 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+19/03/10 22:13:10 WARN toasol.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
 19/03/10 22:13:10 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
 19/03/10 22:13:10 INFO tool.CodeGenTool: Beginning code generation
 19/03/10 22:13:10 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
@@ -384,7 +375,7 @@ Note: Recompile with -Xlint:deprecation for details.
 	File Input Format Counters 
 		Bytes Read=0
 	File Output Format Counters 
-		Bytes Written=2615920
+		Bytes Written
 19/03/10 22:13:53 INFO mapreduce.ImportJobBase: Transferred 2.4947 MB in 39.156 seconds (65.2418 KB/sec)
 19/03/10 22:13:53 INFO mapreduce.ImportJobBase: Retrieved 129761 records.
 [training@localhost ~]$ hdfs dfs -ls /loudacre/accounts/
@@ -396,7 +387,19 @@ Found 5 items
 -rw-rw-rw-   1 training supergroup     638090 2019-03-10 22:13 /loudacre/accounts/user_info/part-m-00000
 -rw-rw-rw-   1 training supergroup     649567 2019-03-10 22:13 /loudacre/accounts/user_info/part-m-00001
 -rw-rw-rw-   1 training supergroup     649000 2019-03-10 22:13 /loudacre/accounts/user_info/part-m-00002
--rw-rw-rw-   1 training supergroup     679263 2019-03-10 22:13 /loudacre/accounts/user_info/part-m-00003`
+-rw-rw-rw-   1 training supergroup     679263 2019-03-10 22:13 /loudacre/accounts/user_info/part-m-00003
+[training@localhost ~]$ hdfs dfs -tail /loudacre/accounts/user_info/part-m-00000
+lsh
+32390	Olga	Lipson
+32391	Eddie	Hedrick
+32392	Alvin	Phillips
+32393	Travis	Ainsworth
+32394	Allen	Pruitt
+32395	Clay	Sherrill
+32396	Janice	Padget t
+32397	Lisa	Backes
+32398	Albert	Walters
+`
 
 
 <GITHUB. Exercise2>
@@ -406,9 +409,200 @@ This time save the same in parquet format with snappy compression. Save it in
 created.
 
 
+`[training@localhost ~]$ sqoop import \
+> --connect jdbc:mysql://localhost/loudacre \
+> --username training --password training \
+> --table accounts \--
+> --columns "acct_num, first_name, last_name" \
+> --target-dir /loudacre/accounts/user_compressed \
+> --fields-terminated-by "\t" \
+> --as-parquetfile \
+> --compression-codec org.apache.hadoop.io.compress.SnappyCodec
+19/03/10 22:32:11 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
+19/03/10 22:32:11 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+19/03/10 22:32:11 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+19/03/10 22:32:11 INFO tool.CodeGenTool: Beginning code generation
+19/03/10 22:32:11 INFO tool.CodeGenTool: Will generate java class as codegen_accounts
+19/03/10 22:32:12 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
+19/03/10 22:32:12 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
+19/03/10 22:32:12 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/lib/hadoop-mapreduce
+Note: /tmp/sqoop-training/compile/94d2e9149af2313235b2013c1ae4a5e8/codegen_accounts.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+19/03/10 22:32:14 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-training/compile/94d2e9149af2313235b2013c1ae4a5e8/codegen_accounts.jar
+19/03/10 22:32:14 WARN manager.MySQLManager: It looks like you are importing from mysql.
+19/03/10 22:32:14 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+19/03/10 22:32:14 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+19/03/10 22:32:14 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+19/03/10 22:32:14 INFO mapreduce.ImportJobBase: Beginning import of accounts
+19/03/10 22:32:14 INFO Configuration.deprecation: mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+19/03/10 22:32:14 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+19/03/10 22:32:15 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
+19/03/10 22:32:15 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
+19/03/10 22:32:17 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+19/03/10 22:32:17 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+19/03/10 22:32:20 INFO db.DBInputFormat: Using read commited transaction isolation
+19/03/10 22:32:20 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`acct_num`), MAX(`acct_num`) FROM `accounts`
+19/03/10 22:32:20 INFO db.IntegerSplitter: Split size: 32440; Num splits: 4 from: 1 to: 129761
+19/03/10 22:32:20 INFO mapreduce.JobSubmitter: number of splits:4
+19/03/10 22:32:20 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1552277124392_0004
+19/03/10 22:32:20 INFO impl.YarnClientImpl: Submitted application application_1552277124392_0004
+19/03/10 22:32:20 INFO mapreduce.Job: The url to track the job: http://localhost:8088/proxy/application_1552277124392_0004/
+19/03/10 22:32:20 INFO mapreduce.Job: Running job: job_1552277124392_0004
+19/03/10 22:32:32 INFO mapreduce.Job: Job job_1552277124392_0004 running in uber mode : false
+19/03/10 22:32:32 INFO mapreduce.Job:  map 0% reduce 0%
+19/03/10 22:32:41 INFO mapreduce.Job:  map 25% reduce 0%
+19/03/10 22:32:49 INFO mapreduce.Job:  map 50% reduce 0%
+19/03/10 22:32:57 INFO mapreduce.Job:  map 75% reduce 0%
+19/03/10 22:33:04 INFO mapreduce.Job:  map 100% reduce 0%
+19/03/10 22:33:04 INFO mapreduce.Job: Job job_1552277124392_0004 completed successfully
+19/03/10 22:33:04 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=565908
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=25234
+		HDFS: Number of bytes written=1305047
+		HDFS: Number of read operations=272
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=40
+	Job Counters 
+		Launched map tasks=4
+		Other local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=0
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=24537
+		Total vcore-seconds taken by all map tasks=24537
+		Total megabyte-seconds taken by all map tasks=6281472
+	Map-Reduce Framework
+		Map input records=129761
+		Map output records=129761
+		Input split bytes=470
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=493
+		CPU time spent (ms)=8920
+		Physical memory (bytes) snapshot=664858624
+		Virtual memory (bytes) snapshot=8296513536
+		Total committed heap usage (bytes)=251920384
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=0
+19/03/10 22:33:04 INFO mapreduce.ImportJobBase: Transferred 1.2446 MB in 47.2564 seconds (26.9691 KB/sec)
+19/03/10 22:33:04 INFO mapreduce.ImportJobBase: Retrieved 129761 records.
+[training@localhost ~]$ 
+[training@localhost ~]$ hdfs dfs -ls /loudacre/accounts/user_compressed/
+Found 6 items
+drwxrwxrwx   - training supergroup          0 2019-03-10 22:32 /loudacre/accounts/user_compressed/.metadata
+drwxrwxrwx   - training supergroup          0 2019-03-10 22:33 /loudacre/accounts/user_compressed/.signals
+-rw-rw-rw-   1 training supergroup     325200 2019-03-10 22:33 /loudacre/accounts/user_compressed/4ba06e75-732e-4307-98cc-36c6514be216.parquet
+-rw-rw-rw-   1 training supergroup     324481 2019-03-10 22:32 /loudacre/accounts/user_compressed/7fd7d510-50f3-4bc7-97a7-8cf1fb40dec8.parquet
+-rw-rw-rw-   1 training supergroup     324989 2019-03-10 22:32 /loudacre/accounts/user_compressed/c871ef25-f7d9-491d-abe3-c71411d2d23b.parquet
+-rw-rw-rw-   1 training supergroup     324753 2019-03-10 22:32 /loudacre/accounts/user_compressed/cde27cc3-8d64-4b37-a4bc-e95c81dee2e5.parquet
+`
+
+
 
 <GITHUB. Exercise3>
 -------------------------
 Finally save in /loudacre/accounts/CA only clients whose state is from California. Save the file
 in parquet format and compressed using gzip. From the terminal, display some of the records
 that you just imported. Take a screenshot and save it as CA_only.
+
+
+`[training@localhost ~]$ sqoop import \
+> --connect jdbc:mysql://localhost/loudacre \
+> --username training --password training \
+> --table accounts \
+> --where " state='CA'" \
+> --target-dir /loudacre/accounts/CA/ \
+> --as-parquetfile \
+> --compress
+19/03/10 22:43:50 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
+19/03/10 22:43:50 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+19/03/10 22:43:50 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+19/03/10 22:43:50 INFO tool.CodeGenTool: Beginning code generation
+19/03/10 22:43:50 INFO tool.CodeGenTool: Will generate java class as codegen_accounts
+19/03/10 22:43:51 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
+19/03/10 22:43:51 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
+19/03/10 22:43:51 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/lib/hadoop-mapreduce
+Note: /tmp/sqoop-training/compile/402c14c8fe9ccafe50e6942094332800/codegen_accounts.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+19/03/10 22:43:54 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-training/compile/402c14c8fe9ccafe50e6942094332800/codegen_accounts.jar
+19/03/10 22:43:54 WARN manager.MySQLManager: It looks like you are importing from mysql.
+19/03/10 22:43:54 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+19/03/10 22:43:54 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+19/03/10 22:43:54 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+19/03/10 22:43:54 INFO mapreduce.ImportJobBase: Beginning import of accounts
+19/03/10 22:43:54 INFO Configuration.deprecation: mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+19/03/10 22:43:54 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+19/03/10 22:43:55 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
+19/03/10 22:43:55 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `accounts` AS t LIMIT 1
+19/03/10 22:43:57 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+19/03/10 22:43:57 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+19/03/10 22:43:59 INFO db.DBInputFormat: Using read commited transaction isolation
+19/03/10 22:43:59 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`acct_num`), MAX(`acct_num`) FROM `accounts` WHERE (  state='CA' )
+19/03/10 22:43:59 INFO db.IntegerSplitter: Split size: 32439; Num splits: 4 from: 1 to: 129760
+19/03/10 22:43:59 INFO mapreduce.JobSubmitter: number of splits:4
+19/03/10 22:44:00 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1552277124392_0005
+19/03/10 22:44:00 INFO impl.YarnClientImpl: Submitted application application_1552277124392_0005
+19/03/10 22:44:00 INFO mapreduce.Job: The url to track the job: http://localhost:8088/proxy/application_1552277124392_0005/
+19/03/10 22:44:00 INFO mapreduce.Job: Running job: job_1552277124392_0005
+19/03/10 22:44:08 INFO mapreduce.Job: Job job_1552277124392_0005 running in uber mode : false
+19/03/10 22:44:08 INFO mapreduce.Job:  map 0% reduce 0%
+19/03/10 22:44:19 INFO mapreduce.Job:  map 25% reduce 0%
+19/03/10 22:44:30 INFO mapreduce.Job:  map 50% reduce 0%
+19/03/10 22:44:39 INFO mapreduce.Job:  map 75% reduce 0%
+19/03/10 22:44:49 INFO mapreduce.Job:  map 100% reduce 0%
+19/03/10 22:44:49 INFO mapreduce.Job: Job job_1552277124392_0005 completed successfully
+19/03/10 22:44:49 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=568988
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=65386
+		HDFS: Number of bytes written=4212382
+		HDFS: Number of read operations=272
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=40
+	Job Counters 
+		Launched map tasks=4
+		Other local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=0
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=33378
+		Total vcore-seconds taken by all map tasks=33378
+		Total megabyte-seconds taken by all map tasks=8544768
+	Map-Reduce Framework
+		Map input records=92416
+		Map output records=92416
+		Input split bytes=470
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=1016
+		CPU time spent (ms)=14700
+		Physical memory (bytes) snapshot=735252480
+		Virtual memory (bytes) snapshot=8296480768
+		Total committed heap usage (bytes)=251920384
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=0
+19/03/10 22:44:49 INFO mapreduce.ImportJobBase: Transferred 4.0172 MB in 52.3918 seconds (78.5171 KB/sec)
+19/03/10 22:44:49 INFO mapreduce.ImportJobBase: Retrieved 92416 records.
+[training@localhost ~]$ 
+[training@localhost ~]$ hdfs dfs -ls /loudacre/accounts/CA/
+Found 6 items
+drwxrwxrwx   - training supergroup          0 2019-03-10 22:43 /loudacre/accounts/CA/.metadata
+drwxrwxrwx   - training supergroup          0 2019-03-10 22:44 /loudacre/accounts/CA/.signals
+-rw-rw-rw-   1 training supergroup    1006953 2019-03-10 22:44 /loudacre/accounts/CA/1b0dd780-bc96-41f3-8699-a4b191b213a2.parquet
+-rw-rw-rw-   1 training supergroup    1201339 2019-03-10 22:44 /loudacre/accounts/CA/314469bb-4671-4fc2-b4a0-0ccee7fcebba.parquet
+-rw-rw-rw-   1 training supergroup     983629 2019-03-10 22:44 /loudacre/accounts/CA/92d3f509-3070-4019-abbd-3fa960937dfd.parquet
+-rw-rw-rw-   1 training supergroup    1004669 2019-03-10 22:44 /loudacre/accounts/CA/99e1c6f6-c848-4cd4-95ef-6a40cda6032e.parquet
+[training@localhost ~]$ `
