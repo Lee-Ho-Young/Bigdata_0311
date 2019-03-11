@@ -2,7 +2,8 @@
 -------------------------
 **1. MySQL DB에 존재하는 table list를 Sqoop을 통해 조회**
 
-`[training@localhost ~]$ sqoop list-tables --connect jdbc:mysql://localhost/loudacre --username training --password training
+```
+[training@localhost ~]$ sqoop list-tables --connect jdbc:mysql://localhost/loudacre --username training --password training
 19/03/10 21:08:51 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
 19/03/10 21:08:51 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
 19/03/10 21:08:52 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
@@ -14,14 +15,15 @@ device
 knowledgebase
 mostactivestations
 webpage
-[training@localhost ~]$ `
-
+[training@localhost ~]$
+```
 
 <Exercise 2. import>
 -------------------------
 **1. MySQL DB에 존재하는 특정 table data를 Sqoop을 통해 HDFS로 import**
 
-`[training@localhost ~]$ sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table basestations --target-dir /loudacre/basestations_import --null-non-string '\\N'
+```
+[training@localhost ~]$ sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table basestations --target-dir /loudacre/basestations_import --null-non-string '\\N'
 19/03/10 21:13:40 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
 19/03/10 21:13:40 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
 19/03/10 21:13:40 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
@@ -94,35 +96,40 @@ Note: Recompile with -Xlint:deprecation for details.
 		Bytes Written=14845
 19/03/10 21:14:41 INFO mapreduce.ImportJobBase: Transferred 14.4971 KB in 56.0631 seconds (264.791 bytes/sec)
 19/03/10 21:14:41 INFO mapreduce.ImportJobBase: Retrieved 377 records.
-[training@localhost ~]$ `
-
+[training@localhost ~]$
+```
 
 **2. Import받은 테이블 데이터를 HDFS상에서 조회**
 
-`[training@localhost ~]$ hdfs dfs -ls /loudacre/basestations_import
+```
+[training@localhost ~]$ hdfs dfs -ls /loudacre/basestations_import
 Found 5 items
 -rw-rw-rw-   1 training supergroup          0 2019-03-10 21:14 /loudacre/basestations_import/_SUCCESS
 -rw-rw-rw-   1 training supergroup       3639 2019-03-10 21:14 /loudacre/basestations_import/part-m-00000
 -rw-rw-rw-   1 training supergroup       3791 2019-03-10 21:14 /loudacre/basestations_import/part-m-00001
 -rw-rw-rw-   1 training supergroup       3681 2019-03-10 21:14 /loudacre/basestations_import/part-m-00002
--rw-rw-rw-   1 training supergroup       3734 2019-03-10 21:14 /loudacre/basestations_import/part-m-00003`
+-rw-rw-rw-   1 training supergroup       3734 2019-03-10 21:14 /loudacre/basestations_import/part-m-00003
+```
 
 
 **3. Import받은 테이블 정보에 대한 개별파일 내용조회**
 
-`[training@localhost ~]$ hdfs dfs -cat /loudacre/basestations_import/part-m-00000
+```
+[training@localhost ~]$ hdfs dfs -cat /loudacre/basestations_import/part-m-00000
 1,86502,Chambers,AZ,35.2375,-109.523
 2,86514,Teec Nos Pos,AZ,36.7797,-109.359
 3,85602,Benson,AZ,31.9883,-110.294
 4,86011,Flagstaff,AZ,35.6308,-112.052
 5,86016,Gray Mountain,AZ,35.6308,-112.052
 6,86018,Parks,AZ,35.2563,-111.95
-.....`
+.....
+```
 
 
 **4. Import받은 테이블 정보를 Linux시스템으로 가져오기**
 
-`[training@localhost ~]$ hdfs dfs -getmerge /loudacre/basestations_import/ ./temp_file.txt
+```
+[training@localhost ~]$ hdfs dfs -getmerge /loudacre/basestations_import/ ./temp_file.txt
 [training@localhost ~]$ ll
 total 80
 -rw-rw-r-- 1 training training 19261 Mar 10 21:13 basestations.java
@@ -137,12 +144,14 @@ drwxr-xr-x 2 training training  4096 Sep 22  2016 Public
 drwxr-xr-x 2 training training  4096 Sep 22  2016 Templates
 drwxr-xr-x 4 training training  4096 Nov 14  2016 training_materials
 drwxr-xr-x 2 training training  4096 Sep 22  2016 Videos
-drwxr-xr-x 9 training training  4096 Oct 27  2016 workspace`
+drwxr-xr-x 9 training training  4096 Oct 27  2016 workspace
+```
 
 
 **5. Import table using an alternate file format(Parquet)**
 
-`[training@localhost ~]$ sqoop import \
+```
+[training@localhost ~]$ sqoop import \
 > --connect jdbc:mysql://localhost/loudacre \
 > --username training --password training \
 > --table basestations \
@@ -223,12 +232,13 @@ Note: Recompile with -Xlint:deprecation for details.
 		Bytes Written=0
 19/03/10 21:27:08 INFO mapreduce.ImportJobBase: Transferred 24.0166 KB in 41.1801 seconds (597.206 bytes/sec)
 19/03/10 21:27:08 INFO mapreduce.ImportJobBase: Retrieved 377 records.
-`
+```
 
 
 **6. Check the contents of Parquet file using parquet-tools**
 
-`[training@localhost ~]$ parquet-tools head hdfs://localhost/loudacre/basestations_import_parquet/
+```
+[training@localhost ~]$ parquet-tools head hdfs://localhost/loudacre/basestations_import_parquet/
 station_num = 95
 zipcode = 91311
 city = Chatsworth
@@ -263,7 +273,7 @@ city = Valencia
 state = CA
 latitude = 34.3985
 longitude = -118.553\
-`
+```
 
 
 <GITHUB. Exercise1>
@@ -274,7 +284,8 @@ delimiters.
 
 **1. Check the PKs of accounts table**
 
-`[training@localhost ~]$ sqoop eval --connect jdbc:mysql://localhost/loudacre --username training --password training --query "desc accounts"
+```
+[training@localhost ~]$ sqoop eval --connect jdbc:mysql://localhost/loudacre --username training --password training --query "desc accounts"
 19/03/10 22:08:24 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
 19/03/10 22:08:24 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
 19/03/10 22:08:24 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
@@ -294,13 +305,14 @@ delimiters.
 | created              | datetime             | NO  |     | (null)               |                      | 
 | modified             | datetime             | NO  |     | (null)               |                      | 
 ---------------------------------------------------------------------------------------------------------
-[training@localhost ~]$`
+[training@localhost ~]$
+```
 
 
 **2. Import columns**
 
-
-`[training@localhost ~]$ sqoop import \
+```
+[training@localhost ~]$ sqoop import \
 > --table accounts \
 > --connect jdbc:mysql://localhost/loudacre \
 > --username training --password training \
@@ -400,7 +412,7 @@ lsh
 32396	Janice	Padget t
 32397	Lisa	Backes
 32398	Albert	Walters
-`
+```
 
 
 <GITHUB. Exercise2>
@@ -410,7 +422,8 @@ This time save the same in parquet format with snappy compression. Save it in
 created.
 
 
-`[training@localhost ~]$ sqoop import \
+```
+[training@localhost ~]$ sqoop import \
 > --connect jdbc:mysql://localhost/loudacre \
 > --username training --password training \
 > --table accounts \--
@@ -503,7 +516,7 @@ drwxrwxrwx   - training supergroup          0 2019-03-10 22:33 /loudacre/account
 -rw-rw-rw-   1 training supergroup     324481 2019-03-10 22:32 /loudacre/accounts/user_compressed/7fd7d510-50f3-4bc7-97a7-8cf1fb40dec8.parquet
 -rw-rw-rw-   1 training supergroup     324989 2019-03-10 22:32 /loudacre/accounts/user_compressed/c871ef25-f7d9-491d-abe3-c71411d2d23b.parquet
 -rw-rw-rw-   1 training supergroup     324753 2019-03-10 22:32 /loudacre/accounts/user_compressed/cde27cc3-8d64-4b37-a4bc-e95c81dee2e5.parquet
-`
+```
 
 
 <GITHUB. Exercise3>
@@ -513,7 +526,8 @@ in parquet format and compressed using gzip. From the terminal, display some of 
 that you just imported. Take a screenshot and save it as CA_only.
 
 
-`[training@localhost ~]$ sqoop import \
+```
+[training@localhost ~]$ sqoop import \
 > --connect jdbc:mysql://localhost/loudacre \
 > --username training --password training \
 > --table accounts \
@@ -605,4 +619,5 @@ drwxrwxrwx   - training supergroup          0 2019-03-10 22:44 /loudacre/account
 -rw-rw-rw-   1 training supergroup    1201339 2019-03-10 22:44 /loudacre/accounts/CA/314469bb-4671-4fc2-b4a0-0ccee7fcebba.parquet
 -rw-rw-rw-   1 training supergroup     983629 2019-03-10 22:44 /loudacre/accounts/CA/92d3f509-3070-4019-abbd-3fa960937dfd.parquet
 -rw-rw-rw-   1 training supergroup    1004669 2019-03-10 22:44 /loudacre/accounts/CA/99e1c6f6-c848-4cd4-95ef-6a40cda6032e.parquet
-[training@localhost ~]$ `
+[training@localhost ~]$ 
+```
