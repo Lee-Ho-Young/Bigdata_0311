@@ -22,7 +22,6 @@ webpage
 **1. MySQL DB에 존재하는 특정 table data를 Sqoop을 통해 HDFS로 import**
 
 `[training@localhost ~]$ sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table basestations --target-dir /loudacre/basestations_import --null-non-string '\\N'
-
 19/03/10 21:13:40 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
 19/03/10 21:13:40 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
 19/03/10 21:13:40 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
@@ -101,7 +100,6 @@ Note: Recompile with -Xlint:deprecation for details.
 **2. Import받은 테이블 데이터를 HDFS상에서 조회**
 
 `[training@localhost ~]$ hdfs dfs -ls /loudacre/basestations_import
-
 Found 5 items
 -rw-rw-rw-   1 training supergroup          0 2019-03-10 21:14 /loudacre/basestations_import/_SUCCESS
 -rw-rw-rw-   1 training supergroup       3639 2019-03-10 21:14 /loudacre/basestations_import/part-m-00000
@@ -113,7 +111,6 @@ Found 5 items
 **3. Import받은 테이블 정보에 대한 개별파일 내용조회**
 
 `[training@localhost ~]$ hdfs dfs -cat /loudacre/basestations_import/part-m-00000
-
 1,86502,Chambers,AZ,35.2375,-109.523
 2,86514,Teec Nos Pos,AZ,36.7797,-109.359
 3,85602,Benson,AZ,31.9883,-110.294
@@ -126,7 +123,6 @@ Found 5 items
 **4. Import받은 테이블 정보를 Linux시스템으로 가져오기**
 
 `[training@localhost ~]$ hdfs dfs -getmerge /loudacre/basestations_import/ ./temp_file.txt
-
 [training@localhost ~]$ ll
 total 80
 -rw-rw-r-- 1 training training 19261 Mar 10 21:13 basestations.java
@@ -153,7 +149,6 @@ drwxr-xr-x 9 training training  4096 Oct 27  2016 workspace
 > --table basestations \
 > --target-dir /loudacre/basestations_import_parquet \
 > --as-parquetfile
-
 19/03/10 21:26:20 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
 19/03/10 21:26:20 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
 19/03/10 21:26:20 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
@@ -234,7 +229,6 @@ Note: Recompile with -Xlint:deprecation for details.
 **6. Check the contents of Parquet file using parquet-tools**
 
 `[training@localhost ~]$ hdfs dfs -ls /loudacre/basestations_import_parquet/
-
 Found 6 items
 drwxrwxrwx   - training supergroup          0 2019-03-10 21:26 /loudacre/basestations_import_parquet/.metadata
 drwxrwxrwx   - training supergroup          0 2019-03-10 21:27 /loudacre/basestations_import_parquet/.signals
@@ -243,8 +237,8 @@ drwxrwxrwx   - training supergroup          0 2019-03-10 21:27 /loudacre/basesta
 -rw-rw-rw-   1 training supergroup       3933 2019-03-10 21:26 /loudacre/basestations_import_parquet/907d2adc-e750-47d8-ad4f-510830089754.parquet
 -rw-rw-rw-   1 training supergroup       4015 2019-03-10 21:26 /loudacre/basestations_import_parquet/dd0a8b52-3868-4416-bc89-57d2efe726bb.parquet`
 
-`
-[training@localhost ~]$ parquet-tools head hdfs://localhost/loudacre/basestations_import_parquet/
+
+`[training@localhost ~]$ parquet-tools head hdfs://localhost/loudacre/basestations_import_parquet/
 station_num = 95
 zipcode = 91311
 city = Chatsworth
@@ -278,5 +272,4 @@ zipcode = 91355
 city = Valencia
 state = CA
 latitude = 34.3985
-longitude = -118.553
-`
+longitude = -118.553`
