@@ -1,3 +1,5 @@
+**통신QM Unit 이호영 선임(09340)**
+
 <Exercise 1. list-tables>
 -------------------------
 **1. MySQL DB에 존재하는 table list를 Sqoop을 통해 조회**
