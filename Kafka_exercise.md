@@ -4,38 +4,56 @@
 -------------------------
 **1. Creating a Kafka Topic**
 
+```
+[cloudera@quickstart ~]$ kafka-topics --list --zookeeper localhost:2181
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/kafka/libs/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/lib/kafka/libs/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+```
+
+``` 
+[cloudera@quickstart ~]$ kafka-topics --create \
+> --zookeeper localhost:2181 \
+> --replication-factor 1 \
+> --partitions 1 \
+> --topic weblogs
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/kafka/libs/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/lib/kafka/libs/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Created topic "weblogs".
+```
+
+```
+[cloudera@quickstart ~]$ kafka-topics --list --zookeeper localhost:2181
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/kafka/libs/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/lib/kafka/libs/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+weblogs
+[cloudera@quickstart ~]$ 
+```
+
+```
+[cloudera@quickstart ~]$ kafka-topics --describe weblogs --zookeeper localhost:2181
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/kafka/libs/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/lib/kafka/libs/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Topic:weblogs	PartitionCount:1	ReplicationFactor:1	Configs:
+	Topic: weblogs	Partition: 0	Leader: 0	Replicas: 0	Isr: 0
+[cloudera@quickstart ~]$ 
+```
 
 
 **2. Producing and Consuming Messages**
 
 
-```
-[training@localhost ~]$ sqoop list-tables \
---connect jdbc:mysql://localhost/loudacre \
---username training --password training
-19/03/10 21:08:51 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6-cdh5.7.0
-19/03/10 21:08:51 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
-19/03/10 21:08:52 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
-accountdevice
-accounts
-basestations
-customerservicerep
-device
-knowledgebase
-mostactivestations
-webpage
-[training@localhost ~]$
-```
 
-<Exercise 2. import>
--------------------------
-**1. MySQL DB에 존재하는 특정 table data를 Sqoop을 통해 HDFS로 import**
 
-```
-[training@localhost ~]$ sqoop import \
---connect jdbc:mysql://localhost/loudacre \
---username training --password training \
---table basestations \
---target-dir /loudacre/basestations_import \
---null-non-string '\\N'
-```
+
