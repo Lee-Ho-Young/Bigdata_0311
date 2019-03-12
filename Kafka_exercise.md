@@ -52,7 +52,7 @@ Topic:weblogs	PartitionCount:1	ReplicationFactor:1	Configs:
 
 
 **2. Producing and Consuming Messages**
-
+![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/picture/Kafka/kafka_lab_result.png)
 
 
 
