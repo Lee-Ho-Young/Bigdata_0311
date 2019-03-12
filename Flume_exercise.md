@@ -182,3 +182,25 @@ Info: Including Hive libraries found via () for Hive access
 2019-03-11 17:53:22,470 (lifecycleSupervisor-1-3) [INFO - org.apache.flume.source.NetcatSource.start(NetcatSource.java:155)] Source starting
 2019-03-11 17:53:22,494 (lifecycleSupervisor-1-3) [INFO - org.apache.flume.source.NetcatSource.start(NetcatSource.java:169)] Created serverSocket:sun.nio.ch.ServerSocketChannelImpl[/127.0.0.1:44444]
 ```
+
+**3. From another terminal start telnet and connect to port 4444. 
+     Start typing and you should see the results from the other terminal. 
+     Provide a screenshot of your results **
+     
+     
+ <Send "Hello world!" through telnet> 
+ 
+ ```
+[training@localhost flume]$ telnet localhost 44444
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+Hello world! 
+OK  
+```
+
+<Get the message through Flume Netcat>  
+ 
+```
+2019-03-11 17:57:52,990 (SinkRunner-PollingRunner-DefaultSinkProcessor) [INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:94)] Event: { headers:{} body: 48 65 6C 6C 6F 20 77 6F 72 6C 64 21 20 0D       Hello world! . }
+```
