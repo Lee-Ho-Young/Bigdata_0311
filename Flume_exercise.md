@@ -144,7 +144,10 @@ agent1.channels.c1.transactionCapacity = 100
 **2. Start the agent**
 
 ```
-[training@localhost flume]$ flume-ng agent --conf /etc/flume-ng/conf --conf-file /home/training/training_materials/devsh/exercises/flume/spooldir_change.conf --name agent1 -Dflume.root.logger=INFO,console
+[training@localhost flume]$ flume-ng agent \
+--conf /etc/flume-ng/conf \
+--conf-file /home/training/training_materials/devsh/exercises/flume/spooldir_change.conf \
+--name agent1 -Dflume.root.logger=INFO,console
 Info: Sourcing environment configuration script /etc/flume-ng/conf/flume-env.sh
 Info: Including Hadoop libraries found via (/usr/bin/hadoop) for HDFS access
 Info: Excluding /usr/lib/hadoop/lib/slf4j-api-1.7.5.jar from classpath
