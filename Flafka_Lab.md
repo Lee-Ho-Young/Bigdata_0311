@@ -67,7 +67,12 @@ Copying and moving files to /flume/weblogs_spooldir/
 
 ```
 
-![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/picture/Kafka/kafka_lab_result.png)
+**3. Test Result ScreenShot**
+![Alt text](https://github.com/Lee-Ho-Young/Bigdata_0311/blob/master/picture/Flafka/Flafka_lab_result.png)
+
+
+
+
 
 
 
